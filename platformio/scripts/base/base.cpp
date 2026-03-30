@@ -1,15 +1,15 @@
-//═════════ Bibliotecas ═════════
-#include "MPU6050_6Axis_MotionApps20.h" 
-#include <esp_now.h>                    
-#include <WiFi.h>                       
-#include "Wire.h"                      
-#include "esp_wifi.h"   
+// Bibliotecas
+#include "MPU6050_6Axis_MotionApps20.h"
+#include <esp_now.h>
+#include <WiFi.h>
+#include "Wire.h"
+#include "esp_wifi.h" 
 
-//═════════ ALTERAR POR CONJUNTO ═════════   
+
 const int CANAL_ESPECIFICO = 3;     
 uint8_t macTransmissor[] = {0x3C, 0x8A, 0x1F, 0xA2, 0x8D, 0x70};
 
-//═════════ Struct da mensagem ESP-NOW ═════════
+// Struct compacta — deve ser idêntica à do equip
 typedef struct {
     uint8_t  id;
     int16_t  gyro;

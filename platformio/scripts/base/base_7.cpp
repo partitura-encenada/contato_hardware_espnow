@@ -1,66 +1,69 @@
-#include <esp_now.h>
-#include <WiFi.h>
-#include "esp_wifi.h"
+//═════════ Bibliotecas ═════════
+#include "MPU6050_6Axis_MotionApps20.h" 
+#include <esp_now.h>                    
+#include <WiFi.h>                       
+#include "Wire.h"                      
+#include "esp_wifi.h"   
 
-const int   CANAL_ESPECIFICO = 3;
+//═════════ ALTERAR POR CONJUNTO ═════════   
+const int CANAL_ESPECIFICO = 13;     
+uint8_t macTransmissor[] = {0x3C, 0x8A, 0x1F, 0xA2, 0x8D, 0x70};
 
-// Estrutura de dados recebida (deve bater com o transmissor)
-typedef struct struct_message {
-    int id; 
-    int gyro;
-    int accel;
-    int touch;
+//═════════ Struct da mensagem ESP-NOW ═════════
+typedef struct {
+    uint8_t  id;
+    int16_t  gyro;
+    int32_t  accel;
+    uint8_t  touch;
 } struct_message;
 
-struct_message MIDImessage;
+static struct_message MIDImessage;
+static struct_message bufferMessage;
+volatile bool newData = false;
+portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED; // mutex contra race condition
 
-// Callback de recepção
-void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) {
-    uint8_t macTransmissor[] = {0x14, 0x33, 0x5C, 0x2E, 0x12, 0xC8}; // MAC do equip (transmissor)
+void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len) {
+    if (memcmp(mac_addr, macTransmissor, 6) != 0) return;
+    if (len != sizeof(struct_message)) return; // descarta pacote com tamanho errado
 
-    if (memcmp(mac_addr, macTransmissor, 6) != 0) {
-        return; // Ignora pacotes de outros dispositivos
-    }
-
-    // Copia os dados recebidos para a struct
+    portENTER_CRITICAL_ISR(&mux);
     memcpy(&MIDImessage, incomingData, sizeof(MIDImessage));
-
-    // Imprime imediatamente, sem controle de tempo
-    Serial.println("D/" + String(MIDImessage.id) + "/" +
-                   String(MIDImessage.gyro) + "/" +
-                   String(MIDImessage.accel) + "/" +
-                   String(MIDImessage.touch));
+    newData = true;
+    portEXIT_CRITICAL_ISR(&mux);
 }
 
 void setup() {
     Serial.begin(115200);
+    esp_log_level_set("*", ESP_LOG_NONE);
 
-    // Configura Wi-Fi como estação
     WiFi.mode(WIFI_STA);
     esp_wifi_set_max_tx_power(82);
-
-    // Fixa o canal no mesmo do transmissor
     esp_wifi_set_promiscuous(true);
-    esp_wifi_set_channel(CANAL_ESPECIFICO, WIFI_SECOND_CHAN_NONE); // Canal do transmissor
+    esp_wifi_set_channel(CANAL_ESPECIFICO, WIFI_SECOND_CHAN_NONE);
     esp_wifi_set_promiscuous(false);
+    // Preâmbulo longo: deve ser igual ao do equip
+    esp_wifi_config_espnow_rate(WIFI_IF_STA, WIFI_PHY_RATE_1M_L);
 
-    // Confirma canal em uso
-    uint8_t primaryChan;
-    wifi_second_chan_t secondChan;
-    esp_wifi_get_channel(&primaryChan, &secondChan);
-    Serial.print("Receptor no canal: ");
-    Serial.println(primaryChan);
-
-    // Inicia ESP-NOW
     if (esp_now_init() != ESP_OK) {
         Serial.println("Erro ao inicializar ESP-NOW");
         return;
     }
-
-    // Registra callback de recepção
     esp_now_register_recv_cb(OnDataRecv);
 }
 
 void loop() {
-    // Nada aqui: apenas recebe via callback
+    if (newData) {
+        portENTER_CRITICAL(&mux);
+        memcpy(&bufferMessage, &MIDImessage, sizeof(MIDImessage));
+        newData = false;
+        portEXIT_CRITICAL(&mux);
+
+        char buf[64];
+        snprintf(buf, sizeof(buf), "D/%d/%d/%d/%d",
+                 bufferMessage.id,
+                 bufferMessage.gyro,
+                 bufferMessage.accel,
+                 bufferMessage.touch);
+        Serial.println(buf);
+    }
 }
