@@ -1,5 +1,4 @@
 //═════════ Bibliotecas ═════════
-#include "MPU6050_6Axis_MotionApps20.h" 
 #include <esp_now.h>                    
 #include <WiFi.h>                       
 #include "Wire.h"                      
@@ -7,7 +6,7 @@
 
 //═════════ ALTERAR POR CONJUNTO ═════════   
 const int CANAL_ESPECIFICO = 3;     
-uint8_t macTransmissor[] = {0x3C, 0x8A, 0x1F, 0xA2, 0x8D, 0x70};
+uint8_t macTransmissor[] = {0x68, 0x25, 0xDD, 0x32, 0x88, 0xB4};
 
 //═════════ Struct da mensagem ESP-NOW ═════════
 typedef struct {

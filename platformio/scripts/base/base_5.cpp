@@ -1,5 +1,4 @@
-//═════════ Bibliotecas ═════════
-#include "MPU6050_6Axis_MotionApps20.h" 
+//═════════ Bibliotecas ═════════ 
 #include <esp_now.h>                    
 #include <WiFi.h>                       
 #include "Wire.h"                      

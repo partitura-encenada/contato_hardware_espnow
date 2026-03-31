@@ -7,14 +7,13 @@
 
 //═════════ Defines ═════════
 #define DEBUG           
-// #define DEBUG_TOUCH  
-// #define USE_DELAY    
+#define USE_DELAY    
 // #define AUTO_CALLIBRATION 
 
 //═════════ ALTERAR POR CONJUNTO ═════════                  
-const uint8_t ID = 7;               
-const int CANAL_ESPECIFICO = 13;     
-uint8_t broadcastAddress[] = {0x14, 0x33, 0x5C, 0x2E, 0x12, 0xC8}; 
+const uint8_t ID = 4;               
+const int CANAL_ESPECIFICO = 5;     
+uint8_t broadcastAddress[] = {0x14, 0x33, 0x5C, 0x2F, 0x8E, 0x30}; 
 const int delay_time = 10;         
 const int touch_sensitivity = 20;   
 const int callibration_time = 6;  
@@ -77,10 +76,10 @@ void setup() {
     mpu.setDMPEnabled(true);
 
     #ifndef AUTO_CALLIBRATION
-        mpu.setZAccelOffset(1098); 
-        mpu.setXGyroOffset(177);    
-        mpu.setYGyroOffset(78);    
-        mpu.setZGyroOffset(1);  
+        mpu.setZAccelOffset(1590); 
+        mpu.setXGyroOffset(166);    
+        mpu.setYGyroOffset(-44);    
+        mpu.setZGyroOffset(49);  
     #endif
 
     if (dev_status == 0) {
@@ -130,6 +129,7 @@ void setup() {
     }
 }
 
+
 //═════════ loop ═════════
 void loop() {
     if (!dmp_ready) return;
@@ -139,19 +139,14 @@ void loop() {
         mpu.dmpGetAccel(&aa, fifo_buffer);
         mpu.dmpGetYawPitchRoll(ypr, &q, &gravity); 
         mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity); 
-
+ 
         message.id = ID;
         message.gyro = (int16_t)(ypr[2] * 180 / M_PI);
         message.accel = (int32_t)aaReal.x;     
         message.touch = (touchRead(T3) < touch_sensitivity) ? 1 : 0;
-
-        #ifdef DEBUG_TOUCH
-            Serial.print("Touch raw value: ");
-            Serial.println(touchRead(T3)); 
-        #endif
-
+ 
         esp_now_send(broadcastAddress, (uint8_t *)&message, sizeof(message));
-
+ 
         #ifdef USE_DELAY
             delay(delay_time);
         #endif
