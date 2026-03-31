@@ -7,7 +7,7 @@
 
 //═════════ Defines ═════════
 #define DEBUG           
-#define USE_DELAY    
+// #define USE_DELAY    
 // #define AUTO_CALLIBRATION 
 
 //═════════ ALTERAR POR CONJUNTO ═════════                  
@@ -150,5 +150,7 @@ void loop() {
         #ifdef USE_DELAY
             delay(delay_time);
         #endif
+    } else {
+        delay(1);
     }
 }

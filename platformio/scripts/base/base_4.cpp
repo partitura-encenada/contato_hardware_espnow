@@ -5,7 +5,7 @@
 #include "esp_wifi.h"   
 
 //═════════ ALTERAR POR CONJUNTO ═════════   
-const int CANAL_ESPECIFICO = 5;     
+const int CANAL_ESPECIFICO = 8;     
 uint8_t macTransmissor[] = {0x14, 0x33, 0x5C, 0x52, 0x4D, 0xE0};
 
 //═════════ Struct da mensagem ESP-NOW ═════════
@@ -58,7 +58,7 @@ void loop() {
         portEXIT_CRITICAL(&mux);
 
         char buf[64];
-        snprintf(buf, sizeof(buf), "D/%d/%d/%d/%d",
+        snprintf(buf, sizeof(buf), "%d/%d/%d/%d",
                  bufferMessage.id,
                  bufferMessage.gyro,
                  bufferMessage.accel,
