@@ -7,12 +7,12 @@
 
 //═════════ Defines ═════════
 #define DEBUG           
-#define USE_DELAY    
+// #define USE_DELAY    
 // #define AUTO_CALLIBRATION 
 
 //═════════ ALTERAR POR CONJUNTO ═════════                  
 const uint8_t ID = 4;               
-const int CANAL_ESPECIFICO = 5;     
+const int CANAL_ESPECIFICO = 8;     
 uint8_t broadcastAddress[] = {0x14, 0x33, 0x5C, 0x2F, 0x8E, 0x30}; 
 const int delay_time = 10;         
 const int touch_sensitivity = 20;   
@@ -150,5 +150,7 @@ void loop() {
         #ifdef USE_DELAY
             delay(delay_time);
         #endif
+    } else {
+        delay(1);
     }
 }

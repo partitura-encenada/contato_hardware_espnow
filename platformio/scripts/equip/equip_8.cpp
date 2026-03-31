@@ -13,7 +13,7 @@
 
 //═════════ ALTERAR POR CONJUNTO ═════════                  
 const uint8_t ID = 8;               
-const int CANAL_ESPECIFICO = 13;     
+const int CANAL_ESPECIFICO = 3;     
 uint8_t broadcastAddress[] = {0x14, 0x33, 0x5C, 0x2E, 0x09, 0x70}; 
 const int delay_time = 10;         
 const int touch_sensitivity = 20;   
@@ -150,5 +150,7 @@ void loop() {
         #ifdef USE_DELAY
             delay(delay_time);
         #endif
+    } else {
+        delay(1);
     }
 }
