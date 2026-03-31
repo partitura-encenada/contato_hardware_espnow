@@ -8,7 +8,6 @@
 
 //═════════ Defines ═════════
 #define DEBUG           // Ativa prints de depuração via Serial. Comente para desativar
-// #define DEBUG_TOUCH  // Ativa print do valor bruto do sensor touch. Comente para desativar
 // #define USE_DELAY    // Ativa delay fixo no loop. Comente para desativar
 // #define AUTO_CALLIBRATION // Ativa calibração automática do MPU no boot. Comente para usar offsets manuais
 
@@ -167,11 +166,6 @@ void loop() {
         message.gyro  = (int16_t)(ypr[2] * 180 / M_PI);             // Converte roll de radianos para graus inteiros
         message.accel = (int32_t)aaReal.x;                           // Aceleração linear no eixo X
         message.touch = (touchRead(T3) < touch_sensitivity) ? 1 : 0; // 1 se tocado, 0 se não tocado
-
-        #ifdef DEBUG_TOUCH
-            Serial.print("Touch raw value: ");
-            Serial.println(touchRead(T3)); // Valor bruto do capacitivo — útil para ajustar touch_sensitivity
-        #endif
 
         // Envia a struct como array de bytes para o MAC da base
         // sizeof(message) garante que apenas os bytes da struct são enviados
