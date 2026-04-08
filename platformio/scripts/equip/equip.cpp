@@ -5,6 +5,7 @@
 #include "Wire.h"                       // Comunicação I2C com o MPU6050
 #include "esp_wifi.h"                   // Funções avançadas de Wi-Fi (canal, potência, taxa)
 
+<<<<<<< HEAD
 //═════════ Defines ═════════
 #define DEBUG                 // Ativa prints de depuração via Serial. Comente para desativar
 // #define USE_DELAY          // Ativa delay fixo no loop. Comente para desativar
@@ -14,6 +15,18 @@
 const uint8_t ID = 3;                // Identificador único deste conjunto (3–8)
 const int CANAL_ESPECIFICO = 2;     // Canal Wi-Fi usado pelo ESP-NOW (deve ser igual ao da base)
 uint8_t broadcastAddress[] = {0x14, 0x33, 0x5C, 0x2E, 0xE6, 0x88}; // Endereço MAC da base deste conjunto
+=======
+
+//═════════ Defines ═════════
+#define DEBUG           // Ativa prints de depuração via Serial. Comente para desativar
+// #define USE_DELAY    // Ativa delay fixo no loop. Comente para desativar
+// #define AUTO_CALLIBRATION // Ativa calibração automática do MPU no boot. Comente para usar offsets manuais
+
+//═════════ ALTERAR POR CONJUNTO ═════════                  
+const uint8_t ID = 3;                // Identificador único deste conjunto (3–8)
+const int CANAL_ESPECIFICO = 3;     // Canal Wi-Fi usado pelo ESP-NOW (deve ser igual ao da base)
+uint8_t broadcastAddress[] = {0x14, 0x33, 0x5C, 0x2F, 0x8E, 0x30}; // Endereço MAC da base deste conjunto
+>>>>>>> 685b2da362e2860b76c5fbbc1ef0a8257dd03585
 const int delay_time = 10;          // Tempo de delay em ms (usado apenas se USE_DELAY ativo)
 const int touch_sensitivity = 20;   // leituras abaixo desse valor = tocado
 const int callibration_time = 6;    // Número de ciclos de calibração automática do MPU
@@ -90,10 +103,17 @@ void setup() {
     #ifndef AUTO_CALLIBRATION
         // Offsets manuais calculados previamente para este sensor específico
         // Compensam erros de fabricação e montagem do MPU6050
+<<<<<<< HEAD
         mpu.setZAccelOffset(1590);
         mpu.setXGyroOffset(166);
         mpu.setYGyroOffset(-44);
         mpu.setZGyroOffset(49);
+=======
+        mpu.setZAccelOffset(1982);
+        mpu.setXGyroOffset(-2);
+        mpu.setYGyroOffset(23);
+        mpu.setZGyroOffset(-36);
+>>>>>>> 685b2da362e2860b76c5fbbc1ef0a8257dd03585
     #endif
 
     if (dev_status == 0) { // DMP inicializado com sucesso
@@ -173,7 +193,10 @@ void loop() {
         #ifdef USE_DELAY
             delay(delay_time); // Delay opcional — aumenta latência mas pode ajudar em casos de instabilidade
         #endif
+<<<<<<< HEAD
     } else {
         delay(1); // Feed do watchdog timer quando não há pacote disponível no FIFO
+=======
+>>>>>>> 685b2da362e2860b76c5fbbc1ef0a8257dd03585
     }
 }

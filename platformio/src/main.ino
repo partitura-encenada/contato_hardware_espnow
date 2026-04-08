@@ -6,14 +6,24 @@
 #include "esp_wifi.h"            
 
 //═════════ Defines ═════════
+<<<<<<< HEAD
 #define DEBUG            
+=======
+#define DEBUG           
+>>>>>>> 685b2da362e2860b76c5fbbc1ef0a8257dd03585
 // #define USE_DELAY    
 // #define AUTO_CALLIBRATION 
 
 //═════════ ALTERAR POR CONJUNTO ═════════                  
+<<<<<<< HEAD
 const uint8_t ID = 8;               
 const int CANAL_ESPECIFICO = 3;     
 uint8_t broadcastAddress[] = {0x14, 0x33, 0x5C, 0x2E, 0x09, 0x70}; 
+=======
+const uint8_t ID = 4;               
+const int CANAL_ESPECIFICO = 5;     
+uint8_t broadcastAddress[] = {0x14, 0x33, 0x5C, 0x2F, 0x8E, 0x30}; 
+>>>>>>> 685b2da362e2860b76c5fbbc1ef0a8257dd03585
 const int delay_time = 10;         
 const int touch_sensitivity = 20;   
 const int callibration_time = 6;  
@@ -76,10 +86,17 @@ void setup() {
     mpu.setDMPEnabled(true);
 
     #ifndef AUTO_CALLIBRATION
+<<<<<<< HEAD
         mpu.setZAccelOffset(1098); 
         mpu.setXGyroOffset(177);    
         mpu.setYGyroOffset(78);    
         mpu.setZGyroOffset(1);  
+=======
+        mpu.setZAccelOffset(1590); 
+        mpu.setXGyroOffset(166);    
+        mpu.setYGyroOffset(-44);    
+        mpu.setZGyroOffset(49);  
+>>>>>>> 685b2da362e2860b76c5fbbc1ef0a8257dd03585
     #endif
 
     if (dev_status == 0) {
@@ -129,6 +146,10 @@ void setup() {
     }
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 685b2da362e2860b76c5fbbc1ef0a8257dd03585
 //═════════ loop ═════════
 void loop() {
     if (!dmp_ready) return;
