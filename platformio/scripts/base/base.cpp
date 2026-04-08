@@ -6,13 +6,8 @@
 #include "esp_wifi.h" 
 
 
-<<<<<<< HEAD
 const int CANAL_ESPECIFICO = 2;     
 uint8_t macTransmissor[] = {0x68, 0x25, 0xDD, 0x32, 0x88, 0xB4};
-=======
-const int CANAL_ESPECIFICO = 3;     
-uint8_t macTransmissor[] = {0x3C, 0x8A, 0x1F, 0xA2, 0x8D, 0x70};
->>>>>>> 685b2da362e2860b76c5fbbc1ef0a8257dd03585
 
 // Struct compacta — deve ser idêntica à do equip
 typedef struct {
@@ -64,11 +59,7 @@ void loop() {
         portEXIT_CRITICAL(&mux);
 
         char buf[64];
-<<<<<<< HEAD
         snprintf(buf, sizeof(buf), "%d/%d/%d/%d",
-=======
-        snprintf(buf, sizeof(buf), "D/%d/%d/%d/%d",
->>>>>>> 685b2da362e2860b76c5fbbc1ef0a8257dd03585
                  bufferMessage.id,
                  bufferMessage.gyro,
                  bufferMessage.accel,
