@@ -12,7 +12,7 @@
 
 //═════════ ALTERAR POR CONJUNTO ═════════                  
 const uint8_t ID = 6;               
-const int CANAL_ESPECIFICO = 13;     
+const int CANAL_ESPECIFICO = 10;     
 uint8_t broadcastAddress[] = {0x14, 0x33, 0x5C, 0x30, 0x2B, 0x58}; 
 const int delay_time = 10;         
 const int touch_sensitivity = 20;   
